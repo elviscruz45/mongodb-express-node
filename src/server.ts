@@ -9,6 +9,8 @@ export class Server {
   constructor() {
     this.setConfigs();
     this.setRoutes();
+    this.error404Handler();
+    this.handleErrors();
   }
   setConfigs() {
     this.connectMongoDB();
@@ -23,4 +25,23 @@ export class Server {
     this.app.use("/api/user", UserRouter);
   }
   userRoutes() {}
+
+  error404Handler() {
+    this.app.use((req, res) => {
+      res.status(404).json({
+        message: "no hay pe causa",
+        status_code: 404,
+      });
+    });
+  }
+
+  handleErrors() {
+    this.app.use((error, req, res, next) => {
+      const errorStatus = req.errorStatus || 500;
+      res.status(errorStatus).json({
+        message: error.message || "Something went wrong",
+        status_code: errorStatus,
+      });
+    });
+  }
 }
