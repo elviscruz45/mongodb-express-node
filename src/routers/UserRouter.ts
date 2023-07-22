@@ -13,8 +13,13 @@ class UserRouter {
     this.deleteRoutes();
   }
   getRoutes() {
-    this.router.get("/login", UserControllers.login);
-    this.router.get("/test", UserControllers.test1, UserControllers.test2);
+    this.router.post("/login", UserControllers.login);
+    this.router.get(
+      "/test",
+      UserControllers.login,
+      UserControllers.test1,
+      UserControllers.test2
+    );
   }
   postRoutes() {}
   patchRoutes() {}
@@ -23,3 +28,5 @@ class UserRouter {
 }
 
 export default new UserRouter().router;
+{
+}

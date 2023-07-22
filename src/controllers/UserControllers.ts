@@ -1,11 +1,24 @@
+import User from "../models/User";
+
 export class UserControllers {
   static login(req, res, next) {
     // const data = { name: "elvis", email: "elviscruz45@gmail.com" };
     // res.status(200).send(data);
-    (req as any).msg = 422;
+    // (req as any).msg = 422;
+    // const error = new Error("use email or password does not match");
+    // next(error);
+    // res.send(req.body);
 
-    const error = new Error("use email or password does not match");
-    next(error);
+    const email = req.body.email;
+    const password = req.body.password;
+    const user = new User({ email, password });
+
+    user
+      .save()
+      .then((user) => {
+        res.send(user);
+      })
+      .catch((e) => next("errorrs", e));
   }
   static test1(req, res, next) {
     console.log("test");

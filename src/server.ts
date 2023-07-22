@@ -2,6 +2,7 @@ import * as express from "express";
 import * as mongoose from "mongoose";
 import { getEnvironmentVariables } from "./environments/environments";
 import UserRouter from "./routers/UserRouter";
+import * as bodyParser from "body-parser";
 
 export class Server {
   public app: express.Application = express();
@@ -14,11 +15,19 @@ export class Server {
   }
   setConfigs() {
     this.connectMongoDB();
+    this.configureBodyParser();
   }
   connectMongoDB() {
     mongoose.connect(getEnvironmentVariables().db_uri).then(() => {
       console.log("connected to MONGODB");
     });
+  }
+  configureBodyParser() {
+    this.app.use(
+      bodyParser.urlencoded({
+        extended: true,
+      })
+    );
   }
 
   setRoutes() {
